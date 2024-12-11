@@ -148,7 +148,7 @@ Branches must follow this pattern:
 - `master` or `main`: Production branch
 - `dev`: Development branch
 - `uat`: User Acceptance Testing branch
-- `ppt`: Pre-production Testing branch
+- `ppt`: Pre-production Testing branch [for product only]
 - Feature branches: `feature/:<TASK-NO>-description`
 - Bug fixes: `bugfix/:<TASK-NO>-description`
 - Hotfixes: `hotfix/:<TASK-NO>-description`
