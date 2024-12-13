@@ -21,7 +21,15 @@ bun add husky prettier validate-branch-name @commitlint/{cli,config-conventional
     "plugins": [
       "prettier-plugin-tailwindcss"
     ]
-  }
+  },
+    "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
+  },
 ```
 
 4. Now Copy & Paste & Run
