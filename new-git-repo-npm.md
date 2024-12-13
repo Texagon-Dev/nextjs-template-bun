@@ -11,7 +11,7 @@ This is Primarily for Frontend but Can be Applied to backend as Well. Tested on 
 2. Run this to Install required Libraries
 
 ```bash
-npm i husky prettier validate-branch-name @commitlint/{cli,config-conventional} prettier-plugin-tailwindcss
+npm i husky prettier validate-branch-name @commitlint/cli @commitlint/config-conventional prettier-plugin-tailwindcss
 ```
 
 3. add this to the ending of package.json
