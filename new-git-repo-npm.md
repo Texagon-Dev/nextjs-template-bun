@@ -69,10 +69,10 @@ echo 'module.exports = {
 ```
 
 5. if You are using non windows system then you need to run this
-   ```bash
+```bash
   chmod +x .husky/pre-commit
   chmod +x .husky/pre-push
   chmod +x .husky/commit-msg
-   ```
+```
 
 5. You can configure the eslint according to your Choice version 8 or 9. it's up to you. But Standard Rules Should be Followed
