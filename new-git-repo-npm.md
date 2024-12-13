@@ -36,9 +36,6 @@ echo '{
 echo "npx lint-staged"> .husky/pre-commit
 echo "npx validate-branch-name"> .husky/pre-push
 echo "npx --no -- commitlint --edit \$1"> .husky/commit-msg
-chmod +x .husky/pre-commit
-chmod +x .husky/pre-push
-chmod +x .husky/commit-msg
 
 echo 'module.exports = {
   extends: ["@commitlint/config-conventional"],
@@ -70,5 +67,12 @@ echo 'module.exports = {
 };
 ' > commitlint.config.js
 ```
+
+5. if You are using non windows system then you need to run this
+   ```bash
+  chmod +x .husky/pre-commit
+  chmod +x .husky/pre-push
+  chmod +x .husky/commit-msg
+   ```
 
 5. You can configure the eslint according to your Choice version 8 or 9. it's up to you. But Standard Rules Should be Followed
