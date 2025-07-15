@@ -10,7 +10,7 @@ const path = require("path");
 
 function detectPackageManager() {
   // Check for lock files to determine package manager
-  if (fs.existsSync("bun.lockb")) return "bun";
+  if (fs.existsSync("bun.lockb") || fs.existsSync("bun.lock")) return "bun";
   if (fs.existsSync("pnpm-lock.yaml")) return "pnpm";
   if (fs.existsSync("yarn.lock")) return "yarn";
   if (fs.existsSync("package-lock.json")) return "npm";
