@@ -69,6 +69,7 @@ echo 'module.exports = {
 ```
 
 5. if You are using non windows system then you need to run this
+
 ```bash
   chmod +x .husky/pre-commit
   chmod +x .husky/pre-push
