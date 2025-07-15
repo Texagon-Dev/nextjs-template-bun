@@ -1,2 +1,2 @@
-bun prettier . --write
-bun lint-staged
+npx prettier . --write
+npx lint-staged
