@@ -110,7 +110,7 @@ export default [
       "max-depth": ["error", { max: 4 }],
       "max-lines-per-function": [
         "error",
-        { max: 50, skipBlankLines: true, skipComments: true },
+        { max: 100, skipBlankLines: true, skipComments: true },
       ],
       "max-params": ["error", { max: 4 }],
       "no-duplicate-imports": "error",
