@@ -71,10 +71,6 @@ Thumbs.db
 next-env.d.ts
 env.d.ts
 
-# Cloudflare
-.wrangler/
-wrangler.toml
-
 # Test files that might have intentional formatting
 **/__tests__/**
 **/*.test.js

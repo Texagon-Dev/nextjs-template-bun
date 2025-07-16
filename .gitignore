@@ -28,15 +28,6 @@ yarn-error.log*
 # local env files
 .env*.local
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# wrangler files
-.wrangler
-.dev.vars
-bun.lockb
-bun.lock
