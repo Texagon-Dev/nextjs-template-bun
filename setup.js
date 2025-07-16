@@ -1,21 +1,12 @@
 #!/usr/bin/env node
-
-/**
- * Universal setup script that works with npm, yarn, pnpm, and bun
- */
-
 const { execSync } = require("child_process");
 const fs = require("fs");
-const path = require("path");
 
 function detectPackageManager() {
-  // Check for lock files to determine package manager
   if (fs.existsSync("bun.lockb") || fs.existsSync("bun.lock")) return "bun";
   if (fs.existsSync("pnpm-lock.yaml")) return "pnpm";
   if (fs.existsSync("yarn.lock")) return "yarn";
   if (fs.existsSync("package-lock.json")) return "npm";
-
-  // Fallback to npm if no lock file found
   return "npm";
 }
 
@@ -45,14 +36,10 @@ function main() {
 
   const runCmd = getRunCommand(packageManager);
 
-  console.log("🚀 Setting up the project...");
-
+  console.log("🚀 ...");
   try {
-    // Install dependencies
-    console.log("📦 Installing dependencies...");
+    console.log("📦 Setting up the project & Installing dependencies...");
     execSync(`${getInstallCommand(packageManager)}`, { stdio: "inherit" });
-
-    // Initialize husky
     console.log("🐶 Setting up Husky...");
     execSync("npx husky init", { stdio: "inherit" });
 
@@ -66,9 +53,7 @@ function main() {
     process.exit(1);
   }
 }
-
 if (require.main === module) {
   main();
 }
-
 module.exports = { detectPackageManager, getRunCommand, getInstallCommand };
