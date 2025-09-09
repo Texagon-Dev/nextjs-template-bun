@@ -246,6 +246,7 @@ Notes
 
 - This project is Bun-only. Use `bun install`, `bun run <script>`, and `bunx`.
 - ESLint: explicit return types are enforced for `.ts` utilities but relaxed for React components in `.tsx` files.
+
 - The ESLint config uses flat config (ESLint 9+) and Next.js Core Web Vitals rules via compatibility bridge.
 
 ESLint Highlights
