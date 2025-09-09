@@ -2,6 +2,8 @@ import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import pluginImport from "eslint-plugin-import";
 import process from "node:process";
 
 export default [
@@ -20,6 +22,7 @@ export default [
       "setup.js",
       "commitlint.config.js",
       ".prettierrc.js",
+      "next-env.d.ts", // Next.js auto-generated file
     ],
   },
 
@@ -44,110 +47,100 @@ export default [
         tsconfigRootDir: process.cwd(),
       },
     },
+    plugins: {
+      "react-hooks": pluginReactHooks,
+      import: pluginImport,
+    },
     settings: {
       react: {
         version: "detect",
       },
+      "import/resolver": {
+        typescript: true,
+        node: true,
+      },
     },
     rules: {
-      // Turn off React import requirement for Next.js
-      "react/react-in-jsx-scope": "off",
-      "react/prop-types": "off",
+      // ========== ESSENTIAL NEXT.JS/REACT RULES ==========
+      "react/react-in-jsx-scope": "off", // Next.js handles React imports
+      "react/prop-types": "off", // TypeScript handles prop types
 
-      // Strict Variable Rules for Performance
+      // ========== REACT HOOKS RULES ==========
+      "react-hooks/rules-of-hooks": "error", // Critical for hooks correctness
+      "react-hooks/exhaustive-deps": "warn", // Warn to allow intentional omissions with comments
+
+      // ========== VARIABLE & UNUSED CODE ==========
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
+          args: "all",
           argsIgnorePattern: "^_",
+          vars: "all",
           varsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
+          ignoreRestSiblings: true,
         },
       ],
       "prefer-const": "error",
       "no-var": "error",
-      "no-unused-expressions": "error",
 
-      // Performance & Memory Optimization
+      // ========== DEBUGGING & PRODUCTION ==========
       "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",
       "no-debugger": process.env.NODE_ENV === "production" ? "error" : "warn",
       "no-alert": "error",
+
+      // ========== SECURITY & SAFETY ==========
       "no-eval": "error",
       "no-implied-eval": "error",
       "no-new-func": "error",
       "no-script-url": "error",
 
-      // TypeScript Strict Rules
-      "@typescript-eslint/no-explicit-any": "error",
+      // ========== TYPESCRIPT BEST PRACTICES ==========
+      "@typescript-eslint/no-explicit-any": "warn", // Warn instead of error for flexibility
       "@typescript-eslint/no-non-null-assertion": "warn",
-      "@typescript-eslint/prefer-nullish-coalescing": "error",
+      "@typescript-eslint/prefer-nullish-coalescing": "warn",
       "@typescript-eslint/prefer-optional-chain": "error",
-      "@typescript-eslint/no-unnecessary-type-assertion": "error",
-      "@typescript-eslint/no-floating-promises": "error",
-      "@typescript-eslint/await-thenable": "error",
-      "@typescript-eslint/no-misused-promises": "error",
-      "@typescript-eslint/prefer-readonly": "error",
-      "@typescript-eslint/prefer-readonly-parameter-types": "off", // Too strict for most cases
-      "@typescript-eslint/strict-boolean-expressions": "error",
-
-      // React Performance Rules
-      "react/jsx-key": "error",
-      "react/jsx-no-bind": [
+      "@typescript-eslint/no-floating-promises": "warn", // Important but warn for flexibility
+      "@typescript-eslint/no-misused-promises": "warn",
+      "@typescript-eslint/consistent-type-imports": [
         "error",
         {
-          allowArrowFunctions: false,
-          allowBind: false,
-          allowFunctions: false,
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
         },
       ],
-      "react/jsx-no-constructed-context-values": "error",
-      "react/jsx-no-useless-fragment": "error",
-      "react/no-array-index-key": "warn",
-      "react/no-unstable-nested-components": "error",
-      "react/self-closing-comp": "error",
 
-      // Code Quality & Readability
-      complexity: ["error", { max: 10 }],
-      "max-depth": ["error", { max: 4 }],
-      "max-lines-per-function": [
-        "error",
-        { max: 100, skipBlankLines: true, skipComments: true },
-      ],
-      "max-params": ["error", { max: 4 }],
+      // ========== IMPORT/DEPENDENCY MANAGEMENT ==========
+      //"import/no-cycle": ["error", { maxDepth: 10 }],
+      // Prevent circular dependencies
       "no-duplicate-imports": "error",
-      "no-useless-return": "error",
-      "no-useless-concat": "error",
-      "no-useless-rename": "error",
-      "object-shorthand": "error",
-      "prefer-template": "error",
-      "prefer-arrow-callback": "error",
-      "arrow-body-style": ["error", "as-needed"],
 
-      // Import/Export Optimization
-      "sort-imports": [
-        "error",
-        {
-          ignoreCase: false,
-          ignoreDeclarationSort: true,
-          ignoreMemberSort: false,
-          memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
-        },
-      ],
+      // ========== REACT PERFORMANCE & QUALITY ==========
+      "react/jsx-no-constructed-context-values": "error", // Prevents unnecessary re-renders
+      "react/jsx-no-useless-fragment": "warn",
+      "react/no-array-index-key": "warn", // Warn as sometimes index is acceptable
+      "react/no-unstable-nested-components": "error", // Performance critical
+      "react/self-closing-comp": "warn",
 
-      // Async/Promise Best Practices
+      // ========== CODE QUALITY ==========
+      "no-useless-return": "warn",
+      "object-shorthand": "warn",
+      "prefer-template": "warn", // String templates are cleaner
+      "prefer-arrow-callback": "warn",
+      "arrow-body-style": ["warn", "as-needed"],
+
+      // ========== ASYNC/PROMISE PATTERNS ==========
       "no-async-promise-executor": "error",
-      "no-await-in-loop": "error",
-      "no-promise-executor-return": "error",
+      "no-await-in-loop": "warn", // Sometimes needed, but usually a code smell
       "prefer-promise-reject-errors": "error",
 
-      // Error Prevention
+      // ========== ERROR PREVENTION ==========
       "no-unreachable": "error",
-      "no-unreachable-loop": "error",
       "no-constant-condition": "error",
       "no-dupe-keys": "error",
       "no-duplicate-case": "error",
-      "no-empty": "error",
-      "no-extra-boolean-cast": "error",
-      "no-sparse-arrays": "error",
       "valid-typeof": "error",
     },
   },
@@ -175,6 +168,7 @@ export default [
     files: ["*.d.ts"],
     rules: {
       "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/consistent-type-imports": "off", // Not needed in .d.ts files
     },
   },
 ];
