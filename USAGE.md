@@ -29,6 +29,10 @@ cd nextjs-template-bun
 
 # OR SSH
 # git clone git@github.com:Texagon-Dev/nextjs-template-bun.git
+
+# OR GITHUB UI
+# CREATE A NEW REPO & SELECT nextjs-template-bun
+# This will auto copy everything
 ```
 
 ---
@@ -43,6 +47,7 @@ Branch names are enforced by `.validate-branch-namerc.json`.
 Examples
 
 ```bash
+
 git checkout -b feature/:123-auth-flow
 # or
 git checkout -b chore/eslint
@@ -59,6 +64,7 @@ git branch -m <new-valid-name>
 ## 4) Install Dependencies (Bun-only)
 
 ```bash
+
 bun install
 ```
 
@@ -72,7 +78,9 @@ Create `/.env.local` for local dev (not committed):
 
 ```bash
 # Server-only
+
 DATABASE_URL=...
+
 
 # Client-exposed
 echo "NEXT_PUBLIC_API_BASE_URL=https://api.example.com" >> .env.local
@@ -110,12 +118,14 @@ bun run dev
 # Type-check + build production
 bun run build
 
+
 # Start production server (after build)
 bun run start
 
 # Lint and fix
 bun run lint
 bun run lint:fix
+
 
 # Format and check format
 bun run format
@@ -155,6 +165,7 @@ Open a PR and ensure the checklist:
 
 - Lint passes (`bun run lint`)
 - Build passes (`bun run build`)
+
 - Audit is clean (`bun audit`)
 - Follows branch/commit conventions
 
@@ -216,4 +227,4 @@ Open a PR and ensure the checklist:
 
 ## 13) Contact
 
-For issues or enhancements, open an issue or PR in this repository.
+For issues or enhancements, open an issue or PR in this repository tag me @mtalhazulf int that issue or enhancement.
