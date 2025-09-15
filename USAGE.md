@@ -1,22 +1,25 @@
 # Usage Guide (From Cloning to Deployment)
 
-IMPORTANT: Use Bun ONLY (no npm/yarn/pnpm)
+## 🚨 Important: Bun is Required
 
-- Install: `bun install`
+This project uses Bun as its exclusive package manager. Other package managers like npm, yarn, or pnpm are not supported.
+
+### Essential Bun Commands:
+
+- Install dependencies: `bun install`
 - Run scripts: `bun run <script>`
 - Execute CLIs: `bunx <cli>`
-- Audit: `bun audit`
+- Security audit: `bun audit`
 
-The `package.json` declares `"packageManager": "bun@1.2.21"`.
+The project is locked to Bun v1.2.21 or later via `package.json`.
 
 ---
 
 ## 1) Prerequisites
 
-- Bun 1.2.21+ (https://bun.sh)
-- Node 18+ available on the system (for tooling only; Bun is used as the package manager)
+- [Bun](https://bun.sh) v1.2.21 or later
 - Git + GitHub access
-- VS Code recommended with workspace files in `.vscode/` already set up
+- VS Code (recommended) with workspace files in `.vscode/` already set up
 
 ---
 
@@ -61,14 +64,17 @@ git branch -m <new-valid-name>
 
 ---
 
-## 4) Install Dependencies (Bun-only)
+## 4) Install Dependencies
 
 ```bash
-
 bun install
 ```
 
-This creates/updates `bun.lock` (single source of truth).
+This will:
+
+- Install all dependencies using Bun (the only supported package manager)
+- Automatically run `prepare` script to set up Git hooks
+- Generate/update the `bun.lock` file
 
 ---
 
@@ -173,7 +179,7 @@ Open a PR and ensure the checklist:
 
 ## 10) Deployment Options
 
-### Option A: Vercel (recommended for Next.js)
+### Option A: Vercel [Recomended by me with Yopmail Account]
 
 - Import the repository on Vercel
 - Framework preset: Next.js
@@ -182,7 +188,7 @@ Open a PR and ensure the checklist:
 - Output directory: `.next`
 - Set required environment variables in Vercel dashboard
 
-### Option B: Self-hosted Node runtime
+### Option B: SelfHosted Node runtime
 
 - Build locally or in CI: `bun run build`
 - Run: `bun run start`
@@ -216,8 +222,12 @@ Open a PR and ensure the checklist:
 
 ## 12) FAQ
 
-- Why Bun-only?
-  - Faster installs, single lockfile, consistent local/CI behavior
+### Why Bun-only?
+
+- **Speed**: Significantly faster installs and script execution
+- **Simplicity**: Single lockfile (`bun.lock`) ensures consistency
+- **Reliability**: Same behavior across local development and CI/CD pipelines
+- **Modern**: Built-in TypeScript support and modern tooling
 - Can I use React 19 types?
   - Yes. React 19 includes its own types; avoid adding `@types/react` / `@types/react-dom`.
 - Where are the Next.js types?
