@@ -204,3 +204,72 @@ NEXT_PUBLIC_API_BASE_URL=https://api.example.com
   - React 19 bundles types; do not add `@types/react` or `@types/react-dom`.
 
 ---
+
+## Editor Setup (VS Code)
+
+To get the most out of this repo, use VS Code with these extensions and settings:
+
+Recommended extensions
+
+- ESLint (dbaeumer.vscode-eslint)
+- Prettier – Code formatter (esbenp.prettier-vscode)
+- Tailwind CSS IntelliSense (bradlc.vscode-tailwindcss)
+- EditorConfig for VS Code (EditorConfig.EditorConfig)
+- GitLens — Git supercharged (eamodio.gitlens)
+- Code Spell Checker (streetsidesoftware.code-spell-checker)
+
+Suggested VS Code settings (User or Workspace)
+
+```jsonc
+{
+  // Formatting
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+
+  // ESLint flat config support
+  "eslint.experimental.useFlatConfig": true,
+
+  // Tailwind CSS
+  "tailwindCSS.experimental.classRegex": [
+    // class-variance-authority (cva)
+    ["cva\\(([^)]*)\\)", "[ '`"]([^'"`]*).*?[ '`"]"],
+    ["cx\\(([^)]*)\\)", "[ '`"]([^'"`]*).*?[ '`"]"]
+  ]
+}
+```
+
+Notes
+
+- This project is Bun-only. Use `bun install`, `bun run <script>`, and `bunx`.
+- ESLint: explicit return types are enforced for `.ts` utilities but relaxed for React components in `.tsx` files.
+
+- The ESLint config uses flat config (ESLint 9+) and Next.js Core Web Vitals rules via compatibility bridge.
+
+ESLint Highlights
+
+- Next.js Core Web Vitals (`plugin:@next/next/core-web-vitals`)
+- Accessibility (`plugin:jsx-a11y/recommended`)
+- TypeScript strictness
+  - `explicit-function-return-type` (off in `.tsx`, on in `.ts`)
+  - `strict-boolean-expressions`, `no-floating-promises`, `no-misused-promises`, `consistent-type-imports`, `no-import-type-side-effects`, `promise-function-async`
+- Import hygiene and organization
+  - `import/order` with groups and `@/**` as internal path group
+  - `import/newline-after-import`, `import/no-duplicates`, `import/no-self-import`, `import/no-cycle`, `import/first`
+- React quality & performance
+  - `react/jsx-no-bind`, `react/jsx-fragments`, `react/jsx-no-useless-fragment`, `react/self-closing-comp`, `react/jsx-boolean-value`, `react/jsx-curly-brace-presence`, `react/jsx-no-constructed-context-values`, `react/no-unstable-nested-components`
+- Security & safety
+  - `react/no-danger`, `react/no-danger-with-children`, `no-eval`, `no-implied-eval`, `no-new-func`, `no-script-url`
+- Prettier integration
+  - `eslint-config-prettier` to disable stylistic conflicts and `eslint-plugin-prettier` to surface formatting issues in lint
+
+---
+
+## Roadmap
+
+- Add unit tests (e.g., Vitest) and E2E tests (e.g., Playwright).
+- Add CI pipelines (GitHub Actions) using Bun for lint, build, test, and audit.
+- Provide example components and patterns using `shadcn/ui`.

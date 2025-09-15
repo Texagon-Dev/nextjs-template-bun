@@ -4,7 +4,13 @@ import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginImport from "eslint-plugin-import";
+import pluginNext from "@next/eslint-plugin-next";
+import { FlatCompat } from "@eslint/eslintrc";
+import prettier from "eslint-config-prettier";
+import pluginPrettier from "eslint-plugin-prettier";
 import process from "node:process";
+
+const compat = new FlatCompat({ baseDirectory: process.cwd() });
 
 export default [
   // Global ignores
@@ -22,16 +28,21 @@ export default [
       "setup.js",
       "commitlint.config.js",
       ".prettierrc.js",
-      "next-env.d.ts", // Next.js auto-generated file
+      "next-env.d.ts",
     ],
   },
 
-  // Base configurations
+  // Base configurations (flat)
   js.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
 
-  // General settings for all files
+  // Next.js rules via compatibility bridge (.eslintrc-based shareable config)
+  ...compat.extends("plugin:@next/next/core-web-vitals"),
+  // Accessibility rules (jsx-a11y) via compat
+  ...compat.extends("plugin:jsx-a11y/recommended"),
+
+  // General settings
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     languageOptions: {
@@ -50,26 +61,29 @@ export default [
     plugins: {
       "react-hooks": pluginReactHooks,
       import: pluginImport,
+      next: pluginNext,
+      // prettier plugin registered to allow `prettier/prettier` rule, if desired
+      // note: the config from eslint-config-prettier is appended at the end
+      prettier: pluginPrettier,
     },
     settings: {
-      react: {
-        version: "detect",
-      },
+      react: { version: "detect" },
+      next: { rootDir: process.cwd() },
       "import/resolver": {
         typescript: true,
         node: true,
       },
     },
     rules: {
-      // ========== ESSENTIAL NEXT.JS/REACT RULES ==========
-      "react/react-in-jsx-scope": "off", // Next.js handles React imports
-      "react/prop-types": "off", // TypeScript handles prop types
+      // Essential Next/React
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
 
-      // ========== REACT HOOKS RULES ==========
-      "react-hooks/rules-of-hooks": "error", // Critical for hooks correctness
-      "react-hooks/exhaustive-deps": "warn", // Warn to allow intentional omissions with comments
+      // Hooks
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
 
-      // ========== VARIABLE & UNUSED CODE ==========
+      // TS quality
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -77,75 +91,123 @@ export default [
           argsIgnorePattern: "^_",
           vars: "all",
           varsIgnorePattern: "^_",
-          caughtErrors: "all",
-          caughtErrorsIgnorePattern: "^_",
-          destructuredArrayIgnorePattern: "^_",
           ignoreRestSiblings: true,
         },
+      ],
+      "@typescript-eslint/explicit-function-return-type": [
+        "warn",
+        { allowExpressions: true, allowTypedFunctionExpressions: true },
+      ],
+      "@typescript-eslint/strict-boolean-expressions": [
+        "error",
+        { allowNullableObject: true },
       ],
       "prefer-const": "error",
       "no-var": "error",
 
-      // ========== DEBUGGING & PRODUCTION ==========
+      // Debug/production
       "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",
       "no-debugger": process.env.NODE_ENV === "production" ? "error" : "warn",
-      "no-alert": "error",
 
-      // ========== SECURITY & SAFETY ==========
+      // Import hygiene
+      "no-duplicate-imports": "error",
+      "import/first": "error",
+      "import/newline-after-import": "error",
+      "import/no-anonymous-default-export": "warn",
+      "import/no-duplicates": "error",
+      "import/no-cycle": "error",
+      "import/no-self-import": "error",
+      "import/order": [
+        "error",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            ["parent", "sibling"],
+            "index",
+            "object",
+            "type",
+          ],
+          "newlines-between": "always",
+          pathGroups: [
+            { pattern: "@/**", group: "internal", position: "after" },
+          ],
+          alphabetize: { order: "asc", caseInsensitive: true },
+        },
+      ],
+
+      // Security & safety
       "no-eval": "error",
       "no-implied-eval": "error",
       "no-new-func": "error",
       "no-script-url": "error",
+      "react/no-danger": "warn",
+      "react/no-danger-with-children": "error",
 
-      // ========== TYPESCRIPT BEST PRACTICES ==========
-      "@typescript-eslint/no-explicit-any": "warn", // Warn instead of error for flexibility
+      // TypeScript best practices
+      "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-non-null-assertion": "warn",
       "@typescript-eslint/prefer-nullish-coalescing": "warn",
       "@typescript-eslint/prefer-optional-chain": "error",
-      "@typescript-eslint/no-floating-promises": "warn", // Important but warn for flexibility
+      "@typescript-eslint/no-floating-promises": "warn",
       "@typescript-eslint/no-misused-promises": "warn",
       "@typescript-eslint/consistent-type-imports": [
         "error",
-        {
-          prefer: "type-imports",
-          fixStyle: "inline-type-imports",
-        },
+        { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
+      "@typescript-eslint/no-import-type-side-effects": "error",
+      "@typescript-eslint/promise-function-async": "error",
 
-      // ========== IMPORT/DEPENDENCY MANAGEMENT ==========
-      //"import/no-cycle": ["error", { maxDepth: 10 }],
-      // Prevent circular dependencies
-      "no-duplicate-imports": "error",
-
-      // ========== REACT PERFORMANCE & QUALITY ==========
-      "react/jsx-no-constructed-context-values": "error", // Prevents unnecessary re-renders
+      // React performance & quality
+      "react/jsx-no-constructed-context-values": "error",
       "react/jsx-no-useless-fragment": "warn",
-      "react/no-array-index-key": "warn", // Warn as sometimes index is acceptable
-      "react/no-unstable-nested-components": "error", // Performance critical
-      "react/self-closing-comp": "warn",
+      "react/jsx-boolean-value": ["error", "never"],
+      "react/jsx-curly-brace-presence": [
+        "error",
+        { props: "never", children: "never" },
+      ],
+      "react/jsx-fragments": ["error", "syntax"],
+      "react/jsx-no-bind": [
+        "warn",
+        { allowArrowFunctions: true, allowFunctions: false, allowBind: false },
+      ],
+      "react/no-array-index-key": "warn",
+      "react/no-unstable-nested-components": "error",
+      "react/self-closing-comp": "error",
 
-      // ========== CODE QUALITY ==========
+      // Code quality
       "no-useless-return": "warn",
       "object-shorthand": "warn",
-      "prefer-template": "warn", // String templates are cleaner
+      "prefer-template": "warn",
       "prefer-arrow-callback": "warn",
       "arrow-body-style": ["warn", "as-needed"],
 
-      // ========== ASYNC/PROMISE PATTERNS ==========
+      // Async/promise patterns
       "no-async-promise-executor": "error",
-      "no-await-in-loop": "warn", // Sometimes needed, but usually a code smell
+      "no-await-in-loop": "warn",
       "prefer-promise-reject-errors": "error",
 
-      // ========== ERROR PREVENTION ==========
+      // Error prevention
       "no-unreachable": "error",
       "no-constant-condition": "error",
       "no-dupe-keys": "error",
       "no-duplicate-case": "error",
       "valid-typeof": "error",
+
+      // Next.js specific
+      "@next/next/no-html-link-for-pages": "error",
+      "@next/next/no-img-element": "error",
+      "react/no-unknown-property": ["error", { ignore: ["jsx", "global"] }],
+      // Prettier as an ESLint rule (optional but helpful to surface formatting issues)
+      "prettier/prettier": "error",
     },
   },
 
-  // Node.js configuration files
+  // Prettier config should be last to disable conflicting rules
+  prettier,
+
+  // Node-ish config files
   {
     files: [
       "*.config.{js,mjs,ts}",
@@ -153,22 +215,24 @@ export default [
       "commitlint.config.js",
       ".prettierrc.js",
     ],
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-    },
-    rules: {
-      "@typescript-eslint/no-require-imports": "off",
-    },
+    languageOptions: { globals: { ...globals.node } },
+    rules: { "@typescript-eslint/no-require-imports": "off" },
   },
 
-  // TypeScript declaration files
+  // .d.ts files
   {
     files: ["*.d.ts"],
     rules: {
       "@typescript-eslint/no-empty-object-type": "off",
-      "@typescript-eslint/consistent-type-imports": "off", // Not needed in .d.ts files
+      "@typescript-eslint/consistent-type-imports": "off",
+    },
+  },
+
+  // Relax return type rule for React component files
+  {
+    files: ["**/*.tsx"],
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": "off",
     },
   },
 ];
