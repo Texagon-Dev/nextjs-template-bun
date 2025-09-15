@@ -1,86 +1,230 @@
-# IMPORTANT: Use Bun ONLY (no npm/yarn/pnpm)
-
-This repository is locked to Bun. Do not use npm, yarn, or pnpm commands.
-
-- Install dependencies: `bun install`
-- Run scripts: `bun run <script>`
-- Execute CLIs: `bunx <cli>`
-- Security scan: `bun audit`
-
-`package.json` declares `"packageManager": "bun@1.2.21"` to enforce this.
-
----
-
 # Next.js + Bun Template
 
-Modern template with Next.js 15 and React 19, managed exclusively with Bun for fast, reproducible installs and a single source of truth (`bun.lock`). It includes ESLint (flat config), Prettier (with Tailwind plugin), Husky + lint-staged, conventional commits, validated branch names, TailwindCSS, and shadcn/ui config.
+A modern, production-ready template built with Next.js 15, React 19, and TypeScript, exclusively managed with Bun for optimal performance and developer experience. This template enforces Bun as the only package manager and comes pre-configured with best practices for styling, code quality, and developer workflow.
 
-## Table of Contents
+> **Important**: This repository is locked to Bun. Using other package managers is not supported.
 
-- Getting Started
-- Project Structure
-- Scripts
-- Development Practices
-- Code Quality and Conventions
-- Styling
-- Security
-- Environment Variables
-- Deployment Notes
-- Troubleshooting
-- Roadmap
+## 🚀 Features
 
----
+- ⚡ Next.js 15 with App Router
+- 🎨 Tailwind CSS with shadcn/ui components
+- 🛠️ TypeScript for type safety
+- 🧹 ESLint + Prettier for code quality
+- 🐶 Husky + lint-staged for pre-commit hooks
+- 📝 Conventional Commits
+- 🔒 Security-focused configuration
+- 🎯 Optimized build and development experience
 
-## Getting Started
+## 🏁 Getting Started
 
-- Prerequisites
-  - Bun 1.2.21+ (install via https://bun.sh)
-  - Node 22+ (for tooling compatibility only; Bun is the package manager)
+### Prerequisites
 
-- Install
-  - `bun install`
+- [Bun](https://bun.sh/) v1.2.21 or later
 
-- Develop
-  - `bun run dev` (http://localhost:3000)
+### Installation
 
-- Production
-  - `bun run build`
-  - `bun run start`
+1. Clone the repository:
 
----
+   ```bash
+   git clone https://github.com/your-username/nextjs-bun-template.git
+   cd nextjs-bun-template
+   ```
 
-## Project Structure
+2. Install dependencies:
+
+   ```bash
+   bun install
+   ```
+
+3. Start the development server:
+   ```bash
+   bun run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Available Scripts
+
+All scripts are run using Bun:
+
+- `bun run dev` - Start development server
+- `bun run build` - Create production build
+- `bun run start` - Start production server
+- `bun run lint` - Run ESLint
+- `bun run format` - Format code with Prettier
+- `bun run prepare` - Set up Git hooks
+  > Note: Always use `bun` commands instead of `npm`, `yarn`, or `pnpm`.
+
+## 🛠 Development
+
+### Code Style
+
+- **ESLint**: Configured with Next.js and React best practices
+- **Prettier**: Automatic code formatting on save
+- **TypeScript**: Strict type checking enabled
+
+### Git Workflow
+
+1. Create a new branch:
+
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. Make your changes and commit them:
+
+   ```bash
+   git add .
+   git commit -m "feat: add new feature"
+   ```
+
+3. Push your changes:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+### Commit Message Format
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/). Example commit messages:
+
+- `feat: add user authentication`
+- `fix: resolve login form validation`
+- `docs: update README`
+- `refactor: improve component structure`
+
+## 🎨 Styling
+
+This project uses [Tailwind CSS](https://tailwindcss.com/) with the following configurations:
+
+- **Tailwind CSS**: Utility-first CSS framework
+- **shadcn/ui**: Reusable components built with Radix UI
+- **CSS Modules**: For component-scoped styles
+
+### Adding New Components
+
+To add a new shadcn/ui component:
+
+```bash
+bunx shadcn-ui@latest add button
+```
+
+## 🔐 Environment Variables
+
+Create a `.env.local` file in the root directory and add the following variables:
+
+```env
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# API
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+```
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to a GitHub/GitLab/Bitbucket repository
+2. Import your project on Vercel
+3. Set up environment variables in the Vercel dashboard
+4. Deploy!
+
+### Self-Hosted
+
+1. Build the application:
+
+   ```bash
+   bun run build
+   ```
+
+2. Start the production server:
+   ```bash
+   bun run start
+   ```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/)
+- [Bun](https://bun.sh/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+## 🗂 Project Structure
 
 ```
 .
-├─ .husky/                       # Git hooks (pre-commit, commit-msg, pre-push)
-├─ .gitignore
-├─ .prettierignore
-├─ .prettierrc.js                # Prettier configuration
-├─ .validate-branch-namerc.json  # Branch naming policy (enforced by pre-push)
-├─ bun.lock                      # Bun lockfile (source of truth)
-├─ commitlint.config.js          # Conventional commit rules
-├─ components.json               # shadcn/ui generator config
-├─ eslint.config.mjs             # ESLint flat config
-├─ next.config.mjs               # Next.js config (minimal)
-├─ package.json                  # Scripts, deps, "packageManager": "bun@1.2.21"
-├─ postcss.config.mjs            # Tailwind/PostCSS config
-├─ public/                       # Static assets
-│  ├─ next.svg
-│  └─ vercel.svg
-├─ src/
-│  ├─ app/                       # App Router
-│  │  ├─ favicon.ico
-│  │  ├─ globals.css
-│  │  ├─ layout.tsx              # Async RootLayout (Edge runtime), cookie-based lang
-│  │  ├─ not-found.tsx           # 404 page
-│  │  └─ page.tsx                # Home page
-│  ├─ components/
-│  │  └─ index.ts                # Component exports barrel
-│  └─ lib/
-│     └─ utils.ts                # Utility helpers
-├─ tailwind.config.ts            # TailwindCSS config
-└─ tsconfig.json                 # TypeScript config
+# Root Configuration
+├── .husky/                      # Git hooks (pre-commit, commit-msg, pre-push)
+│   ├── commit-msg              # Validates commit messages
+│   ├── pre-commit             # Runs lint-staged before commit
+│   └── pre-push               # Validates branch naming before push
+├── .vscode/                    # VS Code settings
+│   ├── extensions.json         # Recommended extensions
+│   └── settings.json           # Workspace settings
+├── public/                     # Static files served at root (/)
+│   ├── next.svg               # Next.js logo
+│   └── vercel.svg             # Vercel logo
+
+# Source Code
+└── src/                        # Application source code
+    ├── app/                    # App Router (Next.js 13+)
+    │   ├── (auth)/            # Authentication related pages
+    │   ├── (dashboard)/       # Dashboard related pages
+    │   ├── api/               # API routes
+    │   ├── globals.css        # Global CSS styles
+    │   ├── layout.tsx         # Root layout component
+    │   ├── not-found.tsx      # 404 page
+    │   └── page.tsx           # Home page component
+    │
+    ├── assets/                # Static assets (images, fonts, etc.)
+    │   └── images/            # Image assets
+    │
+    ├── components/            # Reusable UI components
+    │   ├── ui/               # shadcn/ui components
+    │   └── shared/           # Shared components
+    │
+    ├── contexts/              # React context providers
+    │   └── index.ts          # Context exports
+    │
+    ├── hooks/                 # Custom React hooks
+    │   └── index.ts          # Hooks exports
+    │
+    ├── lib/                   # Utility libraries
+    │   └── utils.ts          # Shared utility functions
+    │
+    ├── services/              # API and service integrations
+    │   └── api/              # API client configuration
+    │
+    ├── types/                 # TypeScript type definitions
+    │   └── index.ts          # Type exports
+    │
+    └── utils/                 # Utility functions
+        └── index.ts          # Utility exports
+
+# Configuration Files
+├── .eslint.config.mjs         # ESLint configuration
+├── .prettierrc.js            # Prettier configuration
+├── .prettierignore           # Files to ignore for Prettier
+├── .validate-branch-namerc.json # Branch naming conventions
+├── bun.lock                  # Bun lockfile (only lockfile used in this project)
+├── commitlint.config.js       # Commit message linting rules
+├── components.json           # shadcn/ui configuration
+├── next.config.mjs           # Next.js configuration
+├── package.json              # Project metadata and dependencies
+├── postcss.config.mjs        # PostCSS configuration
+├── tailwind.config.ts        # Tailwind CSS configuration
+└── tsconfig.json            # TypeScript configuration
 ```
 
 Notes:
