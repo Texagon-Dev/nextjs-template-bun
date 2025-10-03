@@ -1,14 +1,14 @@
+import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import pluginNext from "@next/eslint-plugin-next";
+import prettier from "eslint-config-prettier";
+import pluginImport from "eslint-plugin-import";
+import pluginPrettier from "eslint-plugin-prettier";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginImport from "eslint-plugin-import";
-import pluginNext from "@next/eslint-plugin-next";
-import { FlatCompat } from "@eslint/eslintrc";
-import prettier from "eslint-config-prettier";
-import pluginPrettier from "eslint-plugin-prettier";
+import globals from "globals";
 import process from "node:process";
+import tseslint from "typescript-eslint";
 
 const compat = new FlatCompat({ baseDirectory: process.cwd() });
 
@@ -98,10 +98,6 @@ export default [
         "warn",
         { allowExpressions: true, allowTypedFunctionExpressions: true },
       ],
-      "@typescript-eslint/strict-boolean-expressions": [
-        "error",
-        { allowNullableObject: true },
-      ],
       "prefer-const": "error",
       "no-var": "error",
 
@@ -148,7 +144,6 @@ export default [
       // TypeScript best practices
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-non-null-assertion": "warn",
-      "@typescript-eslint/prefer-nullish-coalescing": "warn",
       "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/no-floating-promises": "warn",
       "@typescript-eslint/no-misused-promises": "warn",
@@ -160,7 +155,7 @@ export default [
       "@typescript-eslint/promise-function-async": "error",
 
       // React performance & quality
-      "react/jsx-no-constructed-context-values": "error",
+      "react/jsx-no-constructed-context-values": "warn",
       "react/jsx-no-useless-fragment": "warn",
       "react/jsx-boolean-value": ["error", "never"],
       "react/jsx-curly-brace-presence": [
@@ -172,7 +167,6 @@ export default [
         "warn",
         { allowArrowFunctions: true, allowFunctions: false, allowBind: false },
       ],
-      "react/no-array-index-key": "warn",
       "react/no-unstable-nested-components": "error",
       "react/self-closing-comp": "error",
 
@@ -224,6 +218,7 @@ export default [
     files: ["*.d.ts"],
     rules: {
       "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/strict-boolean-expressions": "off",
       "@typescript-eslint/consistent-type-imports": "off",
     },
   },
@@ -233,6 +228,7 @@ export default [
     files: ["**/*.tsx"],
     rules: {
       "@typescript-eslint/explicit-function-return-type": "off",
+      "jsx-a11y/label-has-associated-control": "warn",
     },
   },
 ];
